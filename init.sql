@@ -134,7 +134,7 @@ CREATE TABLE Limpa (
     numero_sala INTEGER NOT NULL,
     hora_limpeza TIME NOT NULL,
     observacao TEXT,
-    PRIMARY KEY (cpf_zelador, numero_sala, hora_limpeza),
+    PRIMARY KEY (cpf_zelador, numero_sala),
     FOREIGN KEY (cpf_zelador) REFERENCES Zelador(cpf_zelador),
     FOREIGN KEY (numero_sala) REFERENCES Sala(numero_sala)
 );

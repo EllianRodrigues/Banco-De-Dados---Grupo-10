@@ -87,8 +87,8 @@ docker compose down -v
 
 ## 6) Rodando as consultas (Python)
 
-O repositório inclui um script Python chamado `querry.py` que carrega automaticamente as variáveis do arquivo `.env` e executa as consultas definidas. Após garantir que o `.env` existe e as dependências estão instaladas, execute:
+O repositório inclui um script Python chamado `main.py` que carrega automaticamente as variáveis do arquivo `.env` e executa as consultas definidas no caminho em config.toml. Após garantir que o `.env` existe e as dependências estão instaladas, execute:
 
 ```powershell
-python .\querry.py
+python .\main.py
 ```
