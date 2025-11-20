@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 import psycopg2
 from psycopg2.extras import RealDictCursor
+import traceback
 
 load_dotenv()
 
@@ -23,8 +24,21 @@ def get_connection():
 def query_all(sql, params=None):
     with get_connection() as conn:
         with conn.cursor(cursor_factory=RealDictCursor) as cur:
-            cur.execute(sql, params or ())
-            return cur.fetchall()
+
+            if params is None:
+                results = []
+                statements = [s.strip() for s in sql.split(';') if s.strip()]
+                for stmt in statements:
+                    cur.execute(stmt)
+                    try:
+                        rows = cur.fetchall()
+                    except psycopg2.ProgrammingError:
+                        rows = []
+                    results.extend(rows)
+                return results
+            else:
+                cur.execute(sql, params)
+                return cur.fetchall()
 
 def _read_query_path_from_toml(config_file="config.toml"):
     if not os.path.exists(config_file):
@@ -62,7 +76,8 @@ def main():
         for r in rows:
             print(r)
     except Exception as e:
-        print("Falha na consulta:", e)
+        print("Falha na consulta:")
+        traceback.print_exc()
 
 
 if __name__ == "__main__":
